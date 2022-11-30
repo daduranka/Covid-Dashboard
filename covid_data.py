@@ -36,17 +36,14 @@ def json_file_writer(filepath, destination):
             #assigning the state column to be the key simulating different country names
             key = rows['\ufeffdate'] 
             states_dict[key] = rows       
-            print(states_dict)
-            #key = rows['date']
-            
-            #key = rows['\ufeffdate']
-            #states_dict[key] = rows
-
-    
+        
+        for dict_key in states_dict:
+            states_dict[dict_key]['date'] =  states_dict[dict_key].pop('\ufeffdate')  
+     
     # Open a json writer, and use the json.dumps()
     # function to dump data
-    #with open(destination, 'w', encoding='utf-8') as jsonfile:
-    #    jsonfile.write(json.dumps(states_dict, indent=4))
+    with open(destination, 'a', encoding='utf-8') as jsonfile:
+        jsonfile.write(json.dumps(states_dict, indent=4))
          
 
 current_path = os.getcwd()
