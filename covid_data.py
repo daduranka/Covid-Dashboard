@@ -21,6 +21,9 @@ import json
 #including os library for file paths
 import os
 
+#including date from datetime library store data across days
+from datetime import date
+
 ################################################### Needs Modification #############################################################################################################
 #(function is based off of geeksforgeeks tutorial)
 #Description: This function takes in a path to a file and destinaation and reads the data from the file, converts it into JSON format and stores the data. Its purpose is to
@@ -29,67 +32,121 @@ import os
 #Inputs: filepath - path to csv file
 #        destination - path to location for saving JSON file with data
 #
-#Returns: states_dict - nested dictionary containing the covid data
-def json_file_writer(filepath, destination):
+#Returns: states_dict - nested dictionary containing the covid data ####Can potentially pair this funciton with webscraper.py for collecting data each day
+def json_file_writer(filepath):
+    
+    today = date.today()  
     
     #dictionary for holding state by state data
-    states_dict = {}
+    countries_dict = {}
               
     # create a csv reader
     with open(filepath, encoding='utf-8') as file:
         reader = csv.DictReader(file)
         # Convert each row into a dictionary
         # and add it to data
+        count = 0
         for rows in reader:        
-            #assigning the state column to be the key simulating different country names #####ONLY SAVING WYOMING, NEED DIFFERENT METHOD FOR DETERMINING KEYS
-            key = rows['\ufeffdate'] 
-            states_dict[key] = rows       
-        
-        for dict_key in states_dict:
-            states_dict[dict_key]['date'] =  states_dict[dict_key].pop('\ufeffdate')  
+            #assigning the country column to be the key in the countries_dict
+            key = rows['Country,Other'] 
+            countries_dict[key] = rows       
+    
+    #cleaning up data we don't need/want   #####Will optimize later 
+    for country in countries_dict:
+        countries_dict[country].pop('#')
+        countries_dict[country].pop('NewCases') 
+        countries_dict[country].pop('TotalRecovered') 
+        countries_dict[country].pop('NewRecovered') 
+        countries_dict[country].pop('ActiveCases')
+        countries_dict[country].pop('Serious,Critical') 
+        countries_dict[country].pop('TotalTests') 
+        countries_dict[country].pop('Tests/1M pop') 
+        countries_dict[country].pop('Continent')
+        countries_dict[country].pop('1 Caseevery X ppl') 
+        countries_dict[country].pop('1 Testevery X ppl') 
+        countries_dict[country].pop('New Cases/1M pop') 
+        countries_dict[country].pop('Active Cases/1M pop')
+        countries_dict[country].pop('Tot\xa0Cases/1M pop') 
+    
      
     # Open a json writer, and use the json.dumps()
     # function to dump data
-    with open(destination, 'w', encoding='utf-8') as jsonfile:
-        jsonfile.write(json.dumps(states_dict, indent=4))
+    with open(f'covidinfo{today}.json', 'w', encoding='utf-8') as jsonfile:
+        jsonfile.write(json.dumps(countries_dict, indent=4))
     
-    return states_dict
+    #return states_dict
 ##############################################################################################################################################################################         
 
 
 ######################################################### Needs to be modified ###############################################################################################
-#Function: raw_data 
-#Description: This function computes the raw cumulative death rates and raw daily death rates for a specific state (eventually country). Cumulative death rates sum the deaths 
-#             everyday up to and including the specified date. Daily death rates list the number of deaths that occurred on that specific date. 
+#Function: get_data 
+#Description: This function computes the raw and normalzied cumulative death rates and the raw and cumulative daily death rates for a specific country. Cumulative death rates 
+#             refer to all the deaths that have occurred since Jan 1, 2020. Daily death rates list the number of deaths that occurred on the specific date given; default being
+#             today 
 #
 #Inputs: state - name of the state user wants data from
-#        date - month, day, and year that user wants data from
+#        (optional) date - month, day, and year that user wants data from; default value is today's date
 #
-#Returns: death_rates - dictionary of the daily and cumulative death rates in a specific state for a specific date
-def raw_data(state, date):
+#Returns: death_rates - dictionary of the raw daily and raw cumulative death rates 
+def get_data(country, date = date.today()):
     
-    file_path = os.getcwd() + "/states covid deaths.csv"
-    store_path = 'stored_data_temp.json'
+    file_path = f"{os.getcwd()}/covidinfo{date}.json"
     
-    covid_data = {}
+    death_rates = {} 
     
-    raw_cumulative = 0
-    raw_daily = 0
+    data = json.loads(open(file_path).read())
     
-    covid_data = json_file_writer(file_path, store_path)
-    
-    print(covid_data[date])
-    
+    if country in data:
+        if data[country]['TotalDeaths'] != '':
+            
+            death_rates[f'{country} Raw Cumulative Deaths'] = data[country]['TotalDeaths'].strip()
+        
+        else:
+            death_rates[f'{country} Raw Cumulative Deaths'] = 'N/A'    
+        
+        
+        if data[country]['NewDeaths'] != '':
+        
+            death_rates[f'{country} Raw Daily Deaths'] = data[country]['NewDeaths'].strip('+')
+        
+        else:
+        
+            death_rates[f'{country} Raw Daily Deaths']= 'N/A'  
+        
+        
+        if data[country]['Deaths/1M pop'] != '':
+        
+            death_rates[f'{country} Normalized Cumulative Deaths(/1M)'] = data[country]['Deaths/1M pop']
+        
+        else:
+        
+            death_rates[f'{country} Normalized Cumulative Deaths(/1M)']= 'N/A'              
 
-data_dict = {}
+        
+        if data[country]['New Deaths/1M pop'] != '':
+        
+            death_rates[f'{country} Normalized Daily Deaths(/1M)'] = data[country]['New Deaths/1M pop']
+        
+        else:
+        
+            death_rates[f'{country} Normalized Daily Deaths(/1M)']= 'N/A'                  
+            
+    else:
+        print("Sorry we don't have data for that country/region at the moment")
+        
+    return death_rates    
 
 current_path = os.getcwd()
 
-file_Path = f'{current_path}/states covid deaths.csv'
-database_path = 'stored_data.json'
+file_Path = f'{current_path}/covidinfo2022-11-30.csv'
+#database_path = 'stored_data.json'
  
-# Call the make_json function
-data_dict = json_file_writer(file_Path, database_path)
+#Call the make_json function
+json_file_writer(file_Path)
 
-raw_data('Alabama', '11/27/2022')
+
+print(f"US Data: {get_data('USA')}")
+print(f"Germany Data: {get_data('Germany')}")
+print(f"Cook Islands Data: {get_data('Cook Islands')}")
+
 
