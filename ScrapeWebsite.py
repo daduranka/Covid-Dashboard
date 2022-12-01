@@ -17,7 +17,6 @@ def scrape_country(country,url):
         column_names.append(name)
     column_names[13] = 'Tests/1M pop' # this name was wrapped and gave errors unless manually changed 
     csvfile = pd.DataFrame(columns = column_names)
-    print(csvfile)
     for row in table.find_all('tr')[1:]:
         data = row.find_all('td')
         data_text = [section.text for section in data]
