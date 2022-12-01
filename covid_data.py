@@ -136,9 +136,11 @@ def get_data(country, date = date.today()):
         
     return death_rates    
 
+today = date.today()
+
 current_path = os.getcwd()
 
-file_Path = f'{current_path}/covidinfo2022-11-30.csv'
+file_Path = f'{current_path}/covidinfo{today}.csv'
 #database_path = 'stored_data.json'
  
 #Call the make_json function
