@@ -7,7 +7,7 @@ import pandas as pd # for dataframe creation
 
 
 #Should we make the url value be an optional arugment and have the default be url = 'https://www.worldometers.info/coronavirus/'? That way it will usually be worldometer 
-def scrape_country(country,url):
+def scrape_country(country,url='https://www.worldometers.info/coronavirus/'):
     html_text = requests.get(url).text
     soup = BeautifulSoup(html_text, 'lxml') # lxml is apperently best 
     table = soup.find('table',id = 'main_table_countries_today') # finds main table 
