@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd # for dataframe creation
 
+
+#Should we make the url value be an optional arugment and have the default be url = 'https://www.worldometers.info/coronavirus/'? That way it will usually be worldometer 
 def scrape_country(country,url):
     html_text = requests.get(url).text
     soup = BeautifulSoup(html_text, 'lxml') # lxml is apperently best 
@@ -15,11 +17,12 @@ def scrape_country(country,url):
         column_names.append(name)
     column_names[13] = 'Tests/1M pop' # this name was wrapped and gave errors unless manually changed 
     csvfile = pd.DataFrame(columns = column_names)
+    print(csvfile)
     for row in table.find_all('tr')[1:]:
         data = row.find_all('td')
         data_text = [section.text for section in data]
         location = len(csvfile)
         csvfile.loc[location] = data_text
     
-        
-    
+#used to test functionality
+#scrape_country('America', 'https://www.worldometers.info/coronavirus/')

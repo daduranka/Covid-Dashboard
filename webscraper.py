@@ -1,5 +1,7 @@
 # Practicing Data Scraping from worldometer, grabs main data table from website and saves it as a csv
 
+#adding date time module to distinguish data from different days
+from datetime import date
 
 from bs4 import BeautifulSoup
 import requests
@@ -18,5 +20,7 @@ for row in table.find_all('tr')[1:]:
     data_text = [section.text for section in data]
     location = len(csvfile)
     csvfile.loc[location] = data_text
-    
-csvfile.to_csv('covidinfo.csv',index=False)
+
+today = date.today()    
+
+csvfile.to_csv(f'covidinfo{today}.csv',index=False)
