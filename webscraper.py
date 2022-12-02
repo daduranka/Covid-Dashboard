@@ -2,6 +2,7 @@
 
 #adding date time module to distinguish data from different days
 from datetime import date
+import json
 
 from bs4 import BeautifulSoup
 import requests
@@ -23,4 +24,20 @@ for row in table.find_all('tr')[1:]:
 
 today = date.today()    
 
-csvfile.to_csv(f'covidinfo{today}.csv',index=False)
+death_rates = {}
+
+csvfile.to_json(f'rawcovidinfo{today}.json', orient = 'index')
+
+data = json.loads(open(f'rawcovidinfo{today}.json').read())
+
+for key in data:
+        new_key = data[key]['Country,Other']
+        death_rates[new_key] = data[key]
+
+desired_data_keys = ['Country,Other', 'TotalDeaths', 'NewDeaths', 'Deaths/1M pop', 'Population', '1 Deathevery X ppl', 'New Deaths/1M pop']
+
+death_rates
+
+print(death_rates)
+        
+#print(death_rates)

@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd # for dataframe creation
 
+#testing configurations of code
+import covid_data
 
 #Should we make the url value be an optional arugment and have the default be url = 'https://www.worldometers.info/coronavirus/'? That way it will usually be worldometer 
 def scrape_country(country,url):
@@ -22,6 +24,7 @@ def scrape_country(country,url):
         data_text = [section.text for section in data]
         location = len(csvfile)
         csvfile.loc[location] = data_text
+    json_file_writer()
     
 #used to test functionality
 #scrape_country('America', 'https://www.worldometers.info/coronavirus/')
