@@ -22,22 +22,23 @@ for row in table.find_all('tr')[1:]:
     location = len(csvfile)
     csvfile.loc[location] = data_text
 
-today = date.today()    
+today = date.today()    #grabbing today's date    
+csvfile.to_json(f'rawcovidinfo{today}.json', orient = 'index') #storing data in json format with today's date in title
 
-death_rates = {}
 
-csvfile.to_json(f'rawcovidinfo{today}.json', orient = 'index')
 
-data = json.loads(open(f'rawcovidinfo{today}.json').read())
+data = json.loads(open(f'rawcovidinfo{today}.json').read()) #
 
 for key in data:
         new_key = data[key]['Country,Other']
         death_rates[new_key] = data[key]
 
-desired_data_keys = ['Country,Other', 'TotalDeaths', 'NewDeaths', 'Deaths/1M pop', 'Population', '1 Deathevery X ppl', 'New Deaths/1M pop']
 
-death_rates
+death_rates = {}    #creating empty dictionary for death_rates_data
 
-print(death_rates)
-        
+
+
+
+
 #print(death_rates)
+        
