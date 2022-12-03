@@ -22,6 +22,10 @@ def scrape_country(country,url='https://www.worldometers.info/coronavirus/'):
         data_text = [section.text for section in data]
         location = len(csvfile)
         csvfile.loc[location] = data_text
+    del csvfile["#"]
+    country_data = csvfile.loc[csvfile['Country,Other'].str.lower() == country.lower(), ['NewDeaths','TotalDeaths','Deaths/1M pop','New Deaths/1M pop']]
+    return country_data
+file = scrape_country('usa')
+print(file.describe())
     
-#used to test functionality
-#scrape_country('America', 'https://www.worldometers.info/coronavirus/')
+
