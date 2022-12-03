@@ -1,6 +1,7 @@
 # Module for scraping data and returning deaths in a country, 
 #contains the function scrape_country which takes a country and the website to scrape data from 
 # we use the website worldometer for data scraping 
+from datetime import date
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd # for dataframe creation
@@ -27,5 +28,8 @@ def scrape_country(country,url='https://www.worldometers.info/coronavirus/'):
     return country_data
 file = scrape_country('usa')
 print(file.describe())
-    
+
+today = date.today()    
+
+file.to_csv(f'covidinfo{today}.csv',index=False)
 
