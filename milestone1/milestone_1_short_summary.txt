@@ -1,0 +1,4 @@
+Our data is collected using the BeautifulSoup module from https://www.worldometers.info/coronavirus/. Other modules used include the json, pandas, and requests modules. 
+The raw website data is brought into python from the url using the requests.get() method, the data is then paseed to the soup method from BeautifulSoup and is then manipulated
+in a pandas dataframe and eventually sored in JSON format by date with each country's data included for each date. (i.e. the data for the USA, Germany, or another country on 
+12/03/22 is stored in covidinfo2022-12-03.json) 

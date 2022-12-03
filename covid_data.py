@@ -45,7 +45,6 @@ def json_file_writer(filepath):
         reader = csv.DictReader(file)
         # Convert each row into a dictionary
         # and add it to data
-        count = 0
         for rows in reader:        
             #assigning the country column to be the key in the countries_dict
             key = rows['Country,Other'] 

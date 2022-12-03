@@ -1,0 +1,15 @@
+To run the ScrapeWebsite.py module you must have pandas, BeautifulSoup, and requests installed on your machine. 
+
+pip install commands for each module:
+
+BeautifulSoup: pip install beautifulsoup4
+pandas: pip install pandas
+requests: pip install requests
+
+Once these modules are installed you can simply run the ScrapeWebsite.py to get today's covid information for the usa.
+
+If the data for a different region is desired then the scrape_country function can be called again following the pattern below:
+
+name_of_country = scrape_country('name_of_country')
+
+The return value is a .csv file that contains the raw and normalized data for the country scraped. 
