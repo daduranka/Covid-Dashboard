@@ -1,18 +1,32 @@
+import bokeh
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.palettes import Spectral5
 from bokeh.transform import factor_cmap
+from bokeh.models import Range1d
+
 
 df = pd.read_csv('covidinfo.csv')
-source = ColumnDataSource(df[8:237])
+df = df.replace(',','', regex=True)
+#df['TotalCases'] = df['TotalCases'].astype(int)
+#df['TotalCases'] = df['TotalCases'].div(1000)
+newdf = df[8:238]
+
+output_file("index.html")
+
+total_cases = df['TotalCases'].astype(int)
+total_cases = total_cases.div(1000)
+source = ColumnDataSource(dict(newdf))
 countries = source.data['Country,Other'].tolist()
-p = figure(x_range=countries)
 
-p.vbar(x='Country,Other', top='TotalDeaths', source=source, width=0.70)
 
-p.title.text ='Total Covid Deaths'
-p.xaxis.axis_label = 'Country'
-p.yaxis.axis_label = 'Total Deaths'
+p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = "pan,box_select,zoom_in,zoom_out")
+
+#color_map = factor_cmap(field_name='Country,Other',
+                    #palette=Spectral5, factors=countries)
+
+p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
+p.wedge()
 
 show(p)
