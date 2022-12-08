@@ -1,0 +1,18 @@
+from bokeh.plotting import figure, output_file, show
+from bokeh.models import ColumnDataSource
+from bokeh.models.tools import HoverTool
+from bokeh.palettes import Spectral5
+from bokeh.transform import factor_cmap
+
+df = pd.read_csv('covidinfo.csv')
+source = ColumnDataSource(df[8:237])
+countries = source.data['Country,Other'].tolist()
+p = figure(x_range=countries)
+
+p.vbar(x='Country,Other', top='TotalDeaths', source=source, width=0.70)
+
+p.title.text ='Total Covid Deaths'
+p.xaxis.axis_label = 'Country'
+p.yaxis.axis_label = 'Total Deaths'
+
+show(p)
