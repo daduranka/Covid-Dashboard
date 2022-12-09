@@ -5,9 +5,9 @@ from bokeh.models.tools import HoverTool
 from bokeh.palettes import Spectral5
 from bokeh.transform import factor_cmap
 from bokeh.models import Range1d
+import os
 
-
-df = pd.read_csv('covidinfo.csv')
+df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo.csv')
 df = df.replace(',','', regex=True)
 #df['TotalCases'] = df['TotalCases'].astype(int)
 #df['TotalCases'] = df['TotalCases'].div(1000)
