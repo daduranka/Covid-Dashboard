@@ -8,10 +8,19 @@
 from bokeh.io import *
 from bokeh.models import CustomJS, DatePicker
 from bokeh.layouts import gridplot
+import json
+import os
+from datetime import date
+
+available_dates = []
+
+for root, dirs, files in os.walk(f"{os.getcwd()}/project_data_json"):
+    for file in files:
+        available_dates.append(file.replace('covidinfo', '').replace('.json', ''))
 
 my_website =  output_file('covid_dashboard.html')
 
-date_picker = DatePicker(title='Select date', value="2019-09-20", min_date="2019-08-01", max_date="2019-10-30")
+date_picker = DatePicker(title='Select date', value=f"{date.today()}", min_date=f"{available_dates[0]}", max_date=f"{available_dates[-1]}")
 date_picker.js_on_change("value", CustomJS(code="""
     console.log('date_picker: value=' + this.value, this.toString())
 """))
@@ -98,5 +107,34 @@ toggle.js_on_event('button_click', CustomJS(args=dict(btn=toggle), code="""
     console.log('toggle: active=' + btn.active, this.toString())
 """))
 
-widgets = gridplot([[date_picker, date_range_slider, dropdown, multi_select, select, switch, text_input, toggle]])
-show(widgets)
+
+#example of programing a button push to print
+from bokeh.io import show
+from bokeh.models import Button, CustomJS
+button = Button(label="Click Me", button_type="success")
+button.js_on_click(CustomJS(code="alert('ok')"))
+# display plot
+#show(button)
+
+#example of connecting slider to a plot
+# Import Library
+import numpy as np
+from bokeh.plotting import figure, show
+from bokeh.layouts import layout
+from bokeh.models import RangeSlider
+# Using Sin graph
+n = 200
+X = np.linspace(0, 4*np.pi, n)
+Y = np.sin(X) 
+plot = figure(x_range=(1,5))
+points = plot.x(x=X, y=Y, size=40)
+# Creating the Slider 
+range_slider = RangeSlider(title=" Adjust X-Axis range",start=0,end=13,step=1,value=(plot.x_range.start, plot.x_range.end))
+range_slider.js_link("value", plot.x_range, "start", attr_selector=0)
+range_slider.js_link("value", plot.x_range, "end", attr_selector=1)
+# displaying the output
+layout = layout([range_slider], [plot])
+#show(layout)
+
+#widgets = gridplot([[date_picker, date_range_slider, dropdown, multi_select, select, switch, text_input, toggle]])
+#show(widgets)
