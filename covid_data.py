@@ -89,7 +89,7 @@ def json_file_writer(filepath):
 #Returns: death_rates - dictionary of the raw daily and raw cumulative death rates 
 def get_data(country, date = date.today()):
     
-    file_path = f"{os.getcwd()}/covidinfo{date}.json"
+    file_path = f"{os.getcwd()}/project_data_json/covidinfo{date}.json"
     
     death_rates = {} 
     
@@ -139,7 +139,7 @@ today = date.today()
 
 current_path = os.getcwd()
 
-file_Path = f'{current_path}/covidinfo{today}.csv'
+file_Path = f'{current_path}/project_data_csv/covidinfo{today}.csv'
 #database_path = 'stored_data.json'
  
 #Call the make_json function

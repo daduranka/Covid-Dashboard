@@ -2,6 +2,7 @@
 
 #adding date time module to distinguish data from different days
 from datetime import date
+import os
 
 from bs4 import BeautifulSoup
 import requests
@@ -21,6 +22,8 @@ for row in table.find_all('tr')[1:]:
     location = len(csvfile)
     csvfile.loc[location] = data_text
 
+filepath = os.getcwd()
+
 today = date.today()    
 
-csvfile.to_csv(f'covidinfo{today}.csv',index=False)
+csvfile.to_csv(f'{filepath}/project_data_csv/covidinfo{today}.csv',index=False)
