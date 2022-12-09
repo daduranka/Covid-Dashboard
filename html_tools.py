@@ -25,7 +25,7 @@ date_picker.js_on_change("value", CustomJS(code="""
     console.log('date_picker: value=' + this.value, this.toString())
 """))
 
-#show(date_picker)
+show(date_picker)
 
 
 #DateRangeSlider - Potentially used to let user pick a range of dates they want to view data from
