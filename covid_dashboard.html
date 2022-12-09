@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bokeh Plot</title>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.0.2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.0.2.min.js"></script>
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
+  </head>
+  <body>
+    <div id="642a7e16-5bde-4073-bc44-ebdacac9214a" data-root-id="p1018" style="display: contents;"></div>
+  
+    <script type="application/json" id="p1020">
+      {"9ab99148-aacd-49bc-b5bd-2957ab6cf823":{"version":"3.0.2","title":"Bokeh Application","defs":[],"roots":[{"type":"object","name":"GridPlot","id":"p1018","attributes":{"toolbar":{"type":"object","name":"Toolbar","id":"p1017"},"children":[[{"type":"object","name":"DatePicker","id":"p1001","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1002","attributes":{"code":"\n    console.log('date_picker: value=' + this.value, this.toString())\n"}}]]]},"title":"Select date","value":"2019-09-20","min_date":"2019-08-01","max_date":"2019-10-30","disabled_dates":null,"enabled_dates":null}},0,0],[{"type":"object","name":"DateRangeSlider","id":"p1003","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1004","attributes":{"code":"\n    console.log('date_range_slider: value=' + this.value, this.toString())\n"}}]]]},"value":[1451606400000.0,1483142400000.0],"start":1420070400000.0,"end":1514678400000.0}},0,1],[{"type":"object","name":"Dropdown","id":"p1005","attributes":{"button_type":"warning","js_event_callbacks":{"type":"map","entries":[["menu_item_click",[{"type":"object","name":"CustomJS","id":"p1006","attributes":{"code":"console.log('dropdown: ' + this.item, this.toString())"}}]]]},"label":"Dropdown button","menu":[["Item 1","item_1"],["Item 2","item_2"],null,["Item 3","item_3"]]}},0,2],[{"type":"object","name":"MultiSelect","id":"p1007","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1008","attributes":{"code":"\n    console.log('multi_select: value=' + this.value, this.toString())\n"}}]]]},"options":[["1","foo"],["2","bar"],["3","baz"],["4","quux"]],"value":["1","2"]}},0,3],[{"type":"object","name":"Select","id":"p1009","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1010","attributes":{"code":"\n    console.log('select: value=' + this.value, this.toString())\n"}}]]]},"title":"Option:","options":["foo","bar","baz","quux"],"value":"foo"}},0,4],[{"type":"object","name":"Switch","id":"p1011","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:active",[{"type":"object","name":"CustomJS","id":"p1012","attributes":{"code":"\n    console.log('switch: active=' + this.active, this.toString())\n"}}]]]},"active":true}},0,5],[{"type":"object","name":"TextInput","id":"p1013","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1014","attributes":{"code":"\n    console.log('text_input: value=' + this.value, this.toString())\n"}}]]]},"title":"Label:","value":"default"}},0,6],[{"type":"object","name":"Toggle","id":"p1015","attributes":{"button_type":"success","js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1016","attributes":{"args":{"type":"map","entries":[["btn",{"id":"p1015"}]]},"code":"\n    console.log('toggle: active=' + btn.active, this.toString())\n"}}]]]},"label":"Foo"}},0,7]]}}]}}
+    </script>
+    <script type="text/javascript">
+      (function() {
+        const fn = function() {
+          Bokeh.safely(function() {
+            (function(root) {
+              function embed_document(root) {
+              const docs_json = document.getElementById('p1020').textContent;
+              const render_items = [{"docid":"9ab99148-aacd-49bc-b5bd-2957ab6cf823","roots":{"p1018":"642a7e16-5bde-4073-bc44-ebdacac9214a"},"root_ids":["p1018"]}];
+              root.Bokeh.embed.embed_items(docs_json, render_items);
+              }
+              if (root.Bokeh !== undefined) {
+                embed_document(root);
+              } else {
+                let attempts = 0;
+                const timer = setInterval(function(root) {
+                  if (root.Bokeh !== undefined) {
+                    clearInterval(timer);
+                    embed_document(root);
+                  } else {
+                    attempts++;
+                    if (attempts > 100) {
+                      clearInterval(timer);
+                      console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                    }
+                  }
+                }, 10, root)
+              }
+            })(window);
+          });
+        };
+        if (document.readyState != "loading") fn();
+        else document.addEventListener("DOMContentLoaded", fn);
+      })();
+    </script>
+  </body>
+</html>
