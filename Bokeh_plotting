@@ -2,72 +2,36 @@ import bokeh
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
-from bokeh.models import Select, CustomJS
 from bokeh.palettes import Spectral5
 from bokeh.transform import factor_cmap
 from bokeh.models import Range1d
 import os
 import pandas as pd
+import numpy as np
 
-df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo2022-12-01.csv')
-df = df.replace(',','', regex=True)
+df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo2022-12-10.csv')
+df = df.replace(',','', regex=True).replace(' ', '', regex = True).replace('NaN', '', regex = True).replace(np.nan,0)
+#df = df.
 #df['TotalCases'] = df['TotalCases'].astype(int)
 #df['TotalCases'] = df['TotalCases'].div(1000)
 newdf = df[8:238]
 
 output_file("index.html")
 
-##adding dropbox to select displaying the plot of one or more countries at a time
-data_options = ['Total Cases', 'Total Deaths' ,'New Deaths', 'Deaths per 1M population', 'Population', '1 Death every X number of People', 'New Deaths per 1M population']
+total_cases = df['TotalCases'].astype(int)
+total_cases = total_cases.div(1000)
+source = ColumnDataSource(dict(newdf))
+countries = source.data['Country,Other'].tolist()
 
-select = Select(title = 'Plot Options', value = 'Total Cases', options=data_options)
-select.js_on_change("value", CustomJS(code="""
-#    console.log('select: value=' + this.value, this.toString())
-#"""))
-
-if select.value == '1':
-    total_cases = df['TotalCases'].astype(int)
-    total_cases = total_cases.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()
-elif select.value[0] == '2':
-    total_deaths = df['TotalDeaths'].astype(int)
-    total_deaths = total_deaths.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()  
-elif multi_select.value[0] == '3':
-    new_deaths = df['NewDeaths'].astype(int)
-    new_deaths = new_deaths.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()  
-elif multi_select.value[0] == '4':
-    Deaths_1MPOP = df['Deaths/1M pop'].astype(int)
-    Deaths_1MPOP = Deaths_1MPOP.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()  
-elif multi_select.value[0] == '5':
-    population = df['Population'].astype(int)
-    population = population.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()  
-elif multi_select.value[0] == '6':
-    deaths_every_x_ppl = df['1 Deathevery X ppl'].astype(int)
-    deaths_every_x_ppl = deaths_every_x_ppl.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()    
-else:
-    new_deaths_1M_pop = df['New Deaths/1M pop'].astype(int)
-    new_deaths_1M_pop = new_deaths_1M_pop.div(1000)
-    source = ColumnDataSource(dict(newdf))
-    countries = source.data['Country,Other'].tolist()  
+print(source.data)
 
 
-p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = "pan,box_select,zoom_in,zoom_out")
+#p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = "pan,box_select,zoom_in,zoom_out")
 
 #color_map = factor_cmap(field_name='Country,Other',
                     #palette=Spectral5, factors=countries)
 
-p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
-p.wedge()
+#p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
+#p.wedge()
 
-show(p)
+#show(p)
