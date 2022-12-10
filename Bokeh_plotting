@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo2022-12-10.csv')
-df = df.replace(',','', regex=True).replace(' ', '', regex = True).replace('NaN', '', regex = True).replace(np.nan,0)
+df = df.replace(',','', regex=True).replace(' ', '', regex = True).replace(np.nan,0)
 #df = df.
 #df['TotalCases'] = df['TotalCases'].astype(int)
 #df['TotalCases'] = df['TotalCases'].div(1000)
