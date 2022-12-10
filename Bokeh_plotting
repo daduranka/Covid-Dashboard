@@ -7,11 +7,9 @@ from bokeh.transform import factor_cmap
 from bokeh.models import Range1d
 import os
 import pandas as pd
-import numpy as np
 
-df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo2022-12-10.csv')
-df = df.replace(',','', regex=True).replace(' ', '', regex = True).replace(np.nan,0)
-#df = df.
+df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo.csv')
+df = df.replace(',','', regex=True)
 #df['TotalCases'] = df['TotalCases'].astype(int)
 #df['TotalCases'] = df['TotalCases'].div(1000)
 newdf = df[8:238]
@@ -23,15 +21,13 @@ total_cases = total_cases.div(1000)
 source = ColumnDataSource(dict(newdf))
 countries = source.data['Country,Other'].tolist()
 
-print(source.data)
 
-
-#p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = "pan,box_select,zoom_in,zoom_out")
+p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = "pan,box_select,zoom_in,zoom_out")
 
 #color_map = factor_cmap(field_name='Country,Other',
                     #palette=Spectral5, factors=countries)
 
-#p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
-#p.wedge()
+p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
+p.wedge()
 
-#show(p)
+show(p)
