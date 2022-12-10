@@ -6,6 +6,7 @@ from bokeh.palettes import Spectral5
 from bokeh.transform import factor_cmap
 from bokeh.models import Range1d
 import os
+import pandas as pd
 
 df = pd.read_csv(f'{os.getcwd()}/project_data_csv/covidinfo.csv')
 df = df.replace(',','', regex=True)
