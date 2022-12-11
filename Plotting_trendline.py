@@ -11,7 +11,7 @@ condition = 'NewDeaths' # condition should be able to change using Dropdown widg
 data ={}
 
 for date in dates: # This double loop organizes the dat and creates the data frame used as the source in bokeh plotting
-    tempdf= pd.read_json(f'/Users/elifinlinson/Desktop/Covid-Dashboard-1/project_data_json/covidinfo{date}.json', orient ='index')
+    tempdf= pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo{date}.json', orient ='index')
     tempdf.set_index('Country,Other')
     tempdf = tempdf.replace(',','', regex=True)
     countrydata = {}
