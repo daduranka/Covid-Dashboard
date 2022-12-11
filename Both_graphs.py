@@ -6,9 +6,10 @@ from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.palettes import Category10_10
 import itertools
+from bokeh.models.widgets import PreText, Div
 
 ## Bar graph
-df = pd.read_json('covidinfo2022-11-30.json',orient ='index')
+df = pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo.json',orient ='index')
 df = df.replace(',','', regex=True)
 newdf = df[8:238]
 output_file("index.html")
@@ -17,7 +18,9 @@ source = ColumnDataSource(dict(newdf))
 countries = source.data['Country,Other'].tolist()
 
 
-p = figure(y_range = countries, plot_width = 1000, plot_height = 1000, tools = 'pan,box_select,zoom_in,zoom_out,reset')
+p = figure(title = 'Total Deaths from Covid per country, use zoom, pan and hover tools to better explore the data',
+           x_axis_label = 'Number of Deaths', y_axis_label = 'Country', y_range = countries, plot_width = 1000, 
+           plot_height = 1000, tools = 'pan,box_select,zoom_in,zoom_out,reset')
 
 
 p.hbar(y= 'Country,Other', right ='TotalDeaths', source = source, left = 0, height = 0.1)
@@ -40,7 +43,7 @@ condition = 'NewDeaths' # condition should be able to change using Dropdown widg
 data ={}
 
 for date in dates: # This double loop organizes the dat and creates the data frame used as the source in bokeh plotting
-    tempdf= pd.read_json(f'/Users/elifinlinson/Desktop/Covid-Dashboard-1/project_data_json/covidinfo{date}.json', orient ='index')
+    tempdf= pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo{date}.json', orient ='index')
     tempdf.set_index('Country,Other')
     tempdf = tempdf.replace(',','', regex=True)
     countrydata = {}
@@ -71,8 +74,12 @@ for (name, data )in final.iteritems(): # loops through and plots each countries 
         countryGraph.line('dates',name,source = source,legend_label = name,line_width = 2, color = next(color))
 
 
-
+intro = PreText(text ='Welcome to our Covid Dashboard!',width=500, height=100,
+                style={'font-size':'40pt', 
+                     'color': 'black', 
+                     'font-weight': 'bold', 
+                     'font-family': 'Arial, Helvetica, sans-serif'})
 p.add_tools(hover)
-layout = layout(p,countryGraph)
+layout = layout(intro,p,countryGraph)
 
 show(layout)
