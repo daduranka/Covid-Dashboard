@@ -32,3 +32,8 @@ The main script that needs to be ran is the "Both_Graphs.py" script. This will o
 If you wish to continue building the data base or grab data for the current day, first run webscraper.py and then run covid_data.py. Webscraper grabs raw data from the worldometers website and then stores it in a csv file. covid_data.py then searches through the csv file and grabs the desired data from the csv file and stores it into a JSON file. 
 
 If you wish to quickly grab today's data on a specific country, the ScrapeWebsite.py function can be ran with the user providing a country name to be searched. The ScrapeWebsite function will then return a csvfile that contains a few data points for the desired country or notifies the user that data for that country is unavailble.  
+
+POTENTIAL IMPROVEMENTS:
+-Optimizing code by creating functions to take the place of repetitve code
+-Improving site layout and appearance
+-Learning and utilizing CallbackJS widget method to have more interesting UI
