@@ -15,7 +15,7 @@ For the each of the files to run properly, the following modules need to be inst
 
     Requests - install using command 'pip install requests'
 
-    Bokeh - install using command 'pip install Bokeh'
+    Bokeh - install using command 'pip install Bokeh' (make sure to install Bokeh version 2.4.3 as not all dashboard code is compatible with 3.0.3)
 
 All other modules used are built into the Python standard library and should be avaible with up to date verisons of Python. 
 
