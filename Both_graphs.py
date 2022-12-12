@@ -84,6 +84,7 @@ final1 = final1.replace(r'^\s*$', 0, regex=True)
 
 output_file('Country_overTime.html')
 color = iter(Category10_10)# allows for chaninging color each iteration of plotting loop 
+color2 = iter(Category10_10)
 
 countryGraph = figure(title = f'Seven Day {conditions[0]} Trend for 5 most populous countries (click items in legend to toggle visibility)',
                       x_axis_label = 'Dates',y_axis_label = conditions[0],
