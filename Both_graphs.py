@@ -10,7 +10,7 @@ import itertools
 from bokeh.models.widgets import PreText, Div
 import datetime
 
-## Bar graph
+################################################################### Bar graph ###############################################################################################
 df = pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo2022-12-10.json',orient ='index')
 df = df.replace(',','', regex=True)
 newdf = df[8:238]
@@ -33,35 +33,45 @@ hover.tooltips=[
     ('Total Cases', '@TotalCases'),
     ('Total Deaths', '@TotalDeaths')
 ]
+
+######################################## Line Graph with new death trends for the four most populous countries in the world for past week ####################################
+
 last_week_dates = []
-## Line Graph with new death trends for the four most populous countries in the world for past week
 for i in range(0,7):
     date = datetime.date.today() - datetime.timedelta(days=i)
     last_week_dates.insert(0, str(date))
     
 dates = last_week_dates # creates plots for the last seven
 countries =['China','India','USA','Indonesia', 'Brazil']# five most populous countries
-condition = 'NewDeaths' # condition should be able to change using Dropdown widget 
-condition1 = 'TotalDeaths'
-data ={}
-data1 = {}
-for date in dates: # This double loop organizes the dat and creates the data frame used as the source in bokeh plotting
-    try:
-        tempdf= pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo{date}.json', orient ='index')
-        tempdf.set_index('Country,Other')
-        tempdf = tempdf.replace(',','', regex=True)
-        countrydata = {}
-        countrydata1 = {}
-        for country in countries: 
-            countrydata[country] = tempdf.at[country,condition].replace('+','')
-            countrydata1[country] = tempdf.at[country,condition1].replace('+', '')
-        data[date] = countrydata
-        data1[date] = countrydata1
-    except:
-        print('We did not save data for that date')
+
+conditions = ['NewDeaths', 'TotalDeaths', 'TotalCases', 'Deaths/1M pop', 'Population', '1 Deathevery X ppl', 'New Deaths/1M pop']
+
+#condition = 'NewDeaths' # condition should be able to change using Dropdown widget 
+#condition1 = 'TotalDeaths'
+
+def data_organizer(countries, dates, condition):
+    data = {}
+    for date in dates: # This double loop organizes the dat and creates the data frame used as the source in bokeh plotting
+    
+        #try block for if data is missing for a particular date
+        try: 
+            tempdf= pd.read_json(f'{os.getcwd()}/project_data_json/covidinfo{date}.json', orient ='index')
+            tempdf.set_index('Country,Other')
+            tempdf = tempdf.replace(',','', regex=True)
+            countrydata = {}
+            #countrydata1 = {}
+            for country in countries: 
+                countrydata[country] = tempdf.at[country,condition].replace('+','')
+                #countrydata1[country] = tempdf.at[country,condition1].replace('+', '')
+            data[date] = countrydata
+            #data1[date] = countrydata1
+        except:
+            print('We did not save data for that date')
+    return data
+
 # These next few lines create and reorganize the dataframe 
-final = pd.DataFrame(data)
-final1 = pd.DataFrame(data1)
+final = pd.DataFrame(data_organizer(countries, dates, conditions[0]))
+final1 = pd.DataFrame(data_organizer(countries, dates, conditions[1]))
 
 final = final.T
 final1 = final1.T
@@ -75,14 +85,14 @@ final1 = final1.replace(r'^\s*$', 0, regex=True)
 output_file('Country_overTime.html')
 color = iter(Category10_10)# allows for chaninging color each iteration of plotting loop 
 
-countryGraph = figure(title = f'Seven Day {condition} Trend for 5 most populous countries (click items in legend to toggle visibility)',
-                      x_axis_label = 'Dates',y_axis_label = condition,
+countryGraph = figure(title = f'Seven Day {conditions[0]} Trend for 5 most populous countries (click items in legend to toggle visibility)',
+                      x_axis_label = 'Dates',y_axis_label = conditions[0],
                       x_range = dates, plot_width = 1000, plot_height = 1000, 
                       tools = 'pan,box_select,zoom_in,zoom_out,')
 
 
-countryGraph1 = figure(title = f'Seven Day {condition1} Trend for 5 most populous countries (click items in legend to toggle visibility)',
-                      x_axis_label = 'Dates',y_axis_label = condition1,
+countryGraph1 = figure(title = f'Seven Day {conditions[1]} Trend for 5 most populous countries (click items in legend to toggle visibility)',
+                      x_axis_label = 'Dates',y_axis_label = conditions[1],
                       x_range = dates, plot_width = 1000, plot_height = 1000, 
                       tools = 'pan,box_select,zoom_in,zoom_out,')
 
