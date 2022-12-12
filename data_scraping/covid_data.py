@@ -70,7 +70,7 @@ def json_file_writer(filepath):
      
     # Open a json writer, and use the json.dumps()
     # function to dump data
-    with open(f'covidinfo{today}.json', 'w', encoding='utf-8') as jsonfile:
+    with open(f'../project_data_json/covidinfo{today}.json', 'w', encoding='utf-8') as jsonfile:
         jsonfile.write(json.dumps(countries_dict, indent=4))
     
     #return states_dict

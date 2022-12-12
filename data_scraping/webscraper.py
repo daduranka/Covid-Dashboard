@@ -26,4 +26,4 @@ filepath = os.getcwd()
 
 today = date.today()    
 
-csvfile.to_csv(f'{filepath}/project_data_csv/covidinfo{today}.csv',index=False)
+csvfile.to_json(f'{filepath}/project_data_json/covidinfo{today}.csv',index=False)
