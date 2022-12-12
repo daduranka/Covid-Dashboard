@@ -40,7 +40,7 @@ for i in range(0,7):
     last_week_dates.insert(0, str(date))
     
 dates = last_week_dates # creates plots for the last seven
-countries =['China','India','USA','Indonesia']# four most populous countries
+countries =['China','India','USA','Indonesia', 'Brazil']# five most populous countries
 condition = 'NewDeaths' # condition should be able to change using Dropdown widget 
 condition1 = 'TotalDeaths'
 data ={}
@@ -75,12 +75,13 @@ final1 = final1.replace(r'^\s*$', 0, regex=True)
 output_file('Country_overTime.html')
 color = iter(Category10_10)# allows for chaninging color each iteration of plotting loop 
 
-countryGraph = figure(title = f'Trend for selected countries for the selected data set: "{condition}"',
+countryGraph = figure(title = f'Seven Day {condition} Trend for 5 most populous countries (click items in legend to toggle visibility)',
                       x_axis_label = 'Dates',y_axis_label = condition,
                       x_range = dates, plot_width = 1000, plot_height = 1000, 
                       tools = 'pan,box_select,zoom_in,zoom_out,')
 
-countryGraph1 = figure(title = f'Trend for selected countries for the selected data set: "{condition1}"',
+
+countryGraph1 = figure(title = f'Seven Day {condition1} Trend for 5 most populous countries (click items in legend to toggle visibility)',
                       x_axis_label = 'Dates',y_axis_label = condition1,
                       x_range = dates, plot_width = 1000, plot_height = 1000, 
                       tools = 'pan,box_select,zoom_in,zoom_out,')
@@ -90,11 +91,11 @@ source1 = ColumnDataSource(final1)
 
 for (name, data )in final.iteritems(): # loops through and plots each countries trendline
     if(name != 'dates'):
-        countryGraph.line('dates',name,source = source,legend_label = name,line_width = 2, color = next(color))
+        countryGraph.line('dates',name,source = source,legend_label = name,line_width = 1, color = next(color))
 
 for (name, data )in final1.iteritems(): # loops through and plots each countries trendline
     if(name != 'dates'):
-        countryGraph1.line('dates',name,source = source1,legend_label = name,line_width = 2, color = next(color))
+        countryGraph1.line('dates',name,source = source1,legend_label = name,line_width = 1, color = next(color))
 
 intro = PreText(text ='Welcome to our Covid Dashboard!',width=500, height=100,
                 style={'font-size':'40pt', 
@@ -102,12 +103,19 @@ intro = PreText(text ='Welcome to our Covid Dashboard!',width=500, height=100,
                      'font-weight': 'bold', 
                      'font-family': 'Arial, Helvetica, sans-serif'})
 
+countryGraph.legend.location = 'top_right'
+countryGraph.legend.click_policy = 'hide'
+
+countryGraph1.legend.location = 'top_right'
+countryGraph1.legend.click_policy = 'hide'
+
 tab_new_deaths = Panel(child = countryGraph, title = 'New Deaths')
 tab_total_deaths = Panel(child = countryGraph1, title = 'Total Deaths')
 
 tabs = Tabs(tabs = [tab_new_deaths, tab_total_deaths])
 
 p.add_tools(hover)
+
 layout = layout(intro,p,tabs)
 
 show(layout)
